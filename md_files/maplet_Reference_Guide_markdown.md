@@ -455,7 +455,7 @@ container object from the bioconductor package
 [SummarizedExperiment](https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html).
 This object has four components: assay, rowData, colData, and metadata.
 
-![](media/image1.png){width="6.5in" height="3.6527777777777777in"}
+<img src="SE_Diagram.png" width="800" height="450" />
 
 maplet uses the SummarizedExperiment object as intended by the authors -
 i.e. with samples in columns and variables in rows.The following
