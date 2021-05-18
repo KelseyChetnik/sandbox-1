@@ -3,7 +3,7 @@ divided into three main sections: Build Pipelines (this is the section
 for users - if don't read anything else, read this), Access Results, and
 Development.
 
-1. Build Pipelines
+1. Build Pipelines: test
 ==================
 
 maplet is an R package for statistical data analysis with a special
