@@ -1,3 +1,5 @@
+# maplet Reference Guide
+
 This document provides an overview of the maplet R package. It is
 divided into three main sections: **Build Pipelines** (this is the section
 for users - if don't read anything else, read this), **Access Results**, and
@@ -46,13 +48,13 @@ pipeline objects and populate the assay, rowData, and colData data
 frames using the data from user-provided input files. They are also
 capable of accepting a pipeline object for special cases in which
 loading the data is not the first step in the pipeline (for example,
-mt_settings can be used to set the global settings for the pipeline
+`mt_settings` can be used to set the global settings for the pipeline
 before the data is loaded). If accepting a pipeline object, all of the
 data frames must be empty - otherwise the loading function will crash.
 
 maplet's loading functions are designed to work with standardized data
-formats, such as those provided by metabolon (mt_load_metabolon_v1) and
-UC Davis (mt_load_ucd). See the maplet package documentation for a full
+formats, such as those provided by metabolon (`mt_load_metabolon_v1`) and
+UC Davis (`mt_load_ucd`). See the maplet package documentation for a full
 list of compatible formats.
 
 ### 1.1.2. Data-Independent Functions
@@ -60,22 +62,22 @@ list of compatible formats.
 Data-Independent functions do not require the pipeline object data
 frames (e.g. assay) to be populated in order to perform their
 operations. These functions make up a set of commands one may wish to
-use before a dataset is loaded. For example, mt_load_checksum can be
+use before a dataset is loaded. For example, `mt_load_checksum` can be
 used to ensure a file to be loaded has not been altered before loading
 it into the pipeline. When used as the first step in a pipeline, these
 functions generate pipeline objects, but leave the assay, rowData, and
 colData data frames empty. They are limited to the following list:
 
--   mt_settings - sets and outputs global pipeline settings
+-   `mt_settings` - sets and outputs global pipeline settings
 
--   mt_load_checksum\* - calculates the MD5 checksum of a file; if a
+-   `mt_load_checksum`\* - calculates the MD5 checksum of a file; if a
     checksum is provided by the user, it will be compared to the
     calculated checksum and the pipeline will crash if it does not match
 
--   mt_reporting_heading - stores a header and heading level to be used
+-   `mt_reporting_heading` - stores a header and heading level to be used
     in the generated html report
 
-\*NOTE: mt_load_checksum is part of the **mt_load** namespace, but is
+\*NOTE: `mt_load_checksum` is part of the **mt_load** namespace, but is
 NOT a loading function. It is associated with the namespace because it
 evaluates the checksums of files to be loaded by one of the loading
 functions.
@@ -103,7 +105,7 @@ to rowData / colData**, **1.2.1.2** **calculations**, **1.2.1.3**
 
 These functions map an existing ID column in the rowData or colData data
 frame to an ID column from an external data frame in order to add one or
-more new annotation columns. An example is mt_anno_xls which maps an
+more new annotation columns. An example is `mt_anno_xls which` maps an
 existing ID column in rowData or colData to a user-provided .xlsx file
 containing a data frame of new annotation columns.
 
@@ -111,30 +113,30 @@ containing a data frame of new annotation columns.
 
 These functions perform calculations on the assay data frame and add the
 results as a new column to either rowData or colData. An example is
-mt_anno_missingness which calculates the percent missingness of features
+`mt_anno_missingness` which calculates the percent missingness of features
 and samples.
 
 #### 1.2.1.3. Modify / Modify-In-Place
 
 These functions apply terms or functions to an existing column in
 rowData or colData. Some functions modify the column in place (e.g.
-mt_anno_reorder_factor) or add a new column with the results of the
-modification (e.g. mt_anno_mutate).
+`mt_anno_reorder_factor`) or add a new column with the results of the
+modification (e.g. `mt_anno_mutate`).
 
 #### 1.2.1.4. Pathways (**mt_anno_pathways**)
 
 Functions with the prefix **mt_anno_pathways** add a column containing
 pathway IDs to the rowData data frame. They use an existing feature
 identifier column to fetch pathways from either a custom system file
-(e.g. mt_anno_pathways_hmdb), a user-provided file (e.g.
-mt_anno_pathways_xls) or a pathway annotation package (e.g.
-mt_anno_pathways_graphite). Since multiple pathways can be associated
+(e.g. `mt_anno_pathways_hmdb`), a user-provided file (e.g.
+`mt_anno_pathways_xls`) or a pathway annotation package (e.g.
+`mt_anno_pathways_graphite`). Since multiple pathways can be associated
 with a single feature, the columns created using these functions contain
 lists of pathway IDs.
 
 Pathway annotations are highly redundant - features can belong to
 multiple pathways and a given pathway contains multiple features. maplet
-provides the special function mt_anno_pathways_remove_redundant to
+provides the special function `mt_anno_pathways_remove_redundant` to
 filter redundant pathways in the rowData data frame.
 
 In addition to the annotation column added to the rowData data frame,
@@ -159,8 +161,8 @@ column from their respective annotation data frames and combine them by
 averaging the values between duplicate entries. They are primarily
 intended for use with replicates.
 
-There are also functions (e.g. mt_modify_filter_features or
-mt_modify_filter_samples) that utilize user-provided logical expressions
+There are also functions (e.g. `mt_modify_filter_features` or
+`mt_modify_filter_samples`) that utilize user-provided logical expressions
 to filter and remove samples or features from the assay data frame and
 corresponding annotation data frame. The rows of the annotation data
 frame are filtered based on the results of the expression and filtering
@@ -172,7 +174,7 @@ frame.
 Certain **mt_modify** functions are only applicable in situations in
 which the dataset can be divided into distinct classes. In such cases,
 the assay data frame is subset and replaced with the result of the group
-calculation. For example, the function mt_modify_diff_groups subsets the
+calculation. For example, the function `mt_modify_diff_groups` subsets the
 assay data into two groups (grp1 and grp2) and replaces the existing
 assay data frame with the difference of the first minus the second.
 
@@ -183,7 +185,7 @@ an assay with columns as samples and rows as features. However, there
 are situations in which it is desirable to analyze a different variable
 per sample. maplet provides functions to transform the assay and rowData
 data frames such that 'features' are represented by new variables. For
-example, the function mt_modify_agg_pathways uses the pathway annotation
+example, the function `mt_modify_agg_pathways` uses the pathway annotation
 column to build a new data matrix in which 'features' are represented by
 pathways.
 
@@ -199,9 +201,9 @@ maplet provides a variety of functions for visualizing the structure of
 the data. These functions are particularly useful for getting a global
 overview of the data and are commonly used during preprocessing of the
 data. Types of data visualizations include dimensionality reduction
-(e.g. mt_plots_pca or mt_plots_umap), missingness (e.g.
-mt_plots_missingness), heatmap (e.g. mt_plots_heatmap), and sample box
-plots (e.g. mt_plots_sample_boxplot).
+(e.g. `mt_plots_pca` or `mt_plots_umap`), missingness (e.g.
+`mt_plots_missingness`), heatmap (e.g. `mt_plots_heatmap`), and sample box
+plots (e.g. `mt_plots_sample_boxplot`).
 
 #### 1.2.3.2. Statistical Results
 
@@ -214,12 +216,12 @@ of significant results.
 #### 1.2.3.3. Pathways
 
 maplet provides several functions for visualizing pathway data. For
-example, mt_plots_pathview is a wrapper function for the pathview
+example, `mt_plots_pathview` is a wrapper function for the pathview
 function from the
-[[pathview]{.ul}](https://bioconductor.org/packages/release/bioc/html/pathview.html)
+[pathview](https://bioconductor.org/packages/release/bioc/html/pathview.html)
 package that allows users to visualize pathways as graphs and color
 features present in the data by relative significance. Another example
-is mt_plots_equalizer which creates a nested plot based on pathway
+is `mt_plots_equalizer` which creates a nested plot based on pathway
 feature annotations (e.g. super- and sub-pathways or subpathways and
 features).
 
@@ -240,28 +242,28 @@ confounder.
 
 Batch correction functions are denoted by the prefix **mt_pre_batch**.
 They perform batch correction on the assay data frame using one of the
-available methods (e.g. mt_pre_batch_combat).
+available methods (e.g. `mt_pre_batch_combat`).
 
 Confounding correction functions are denoted by the prefix
 **mt_pre_confounding_correction**. They correct for confounders using
 one of the available methods (e.g.
-mt_pre_confounding_correction_stepaic).
+`mt_pre_confounding_correction_stepaic`).
 
 #### 1.2.4.2. Normalization (**mt_pre_norm**)
 
 Functions with the prefix **mt_pre_norm** perform normalization of the
-data. An example is mt_pre_norm_quot which performs quotient
+data. An example is `mt_pre_norm_quot` which performs quotient
 normalization of the data.
 
 #### 1.2.4.3. Imputation & Zero Replacement
 
 Imputation functions are denoted by the prefix **mt_pre_impute**. maplet
 primarily provides the K-Nearest Neighbor (KNN) method to impute missing
-values (e.g. mt_pre_impute_knn).
+values (e.g. `mt_pre_impute_knn`).
 
 maplet pipelines represent missingness as NA values. Data from platforms
 that represent missing / sub-LOD values as zeros must be converted after
-loading using the function mt_pre_zero_to_na to replace these zeros with
+loading using the function `mt_pre_zero_to_na` to replace these zeros with
 NA values.
 
 #### 1.2.4.4. Filter Missingness
@@ -280,7 +282,7 @@ called first, followed by a filtering step.
 
 Data transformation functions are denoted by the prefix
 **mt_pre_trans**. These include such operations as log transformation
-(mt_pre_trans_log) and scaling (mt_pre_trans_scale).
+(`mt_pre_trans_log`) and scaling (`mt_pre_trans_scale`).
 
 ### 1.2.5. Statistical Analysis (**mt_stats**)
 
@@ -296,18 +298,18 @@ multi*variable* (e.g. linear regression models with confounders),
 but not multi*variate*. That is they will calculate a separate
 model for each individual feature. maplet provides a variety of
 functions for univariate analysis, including linear models
-(mt_stats_univ_lm) and correlation (mt_stats_univ_cor).
+(`mt_stats_univ_lm`) and correlation (`mt_stats_univ_cor`).
 
 #### 1.2.5.2. Correlation Matrix Models (**mt_stats_cormat**)
 
 Functions with the prefix **mt_stats_cormat** calculate correlation
-matrices. An example is mt_stats_coramt_genenet, which computes partial
+matrices. An example is `mt_stats_coramt_genenet`, which computes partial
 correlations using GeneNet.
 
 #### 1.2.5.3. Pathway Analyses (**mt_stats_pathway**)
 
 Functions with the prefix **mt_stats_pathway** allow the user to perform
-pathway analysis. An example is mt_stats_pathway_enrichment, which
+pathway analysis. An example is `mt_stats_pathway_enrichment`, which
 computes the pathway enrichment using Fisher's exact test.
 
 ### 1.2.6. Post-Test Operations (**mt_post**)
@@ -319,13 +321,13 @@ post-hoc test directly to the table of the statistical result they are
 computed on. There are three types of post-hoc tests available:
 
 -   **multiple testing correction** - adjust p-values for multiple
-    tests; multiple methods available (e.g. mt_post_multtest)
+    tests; multiple methods available (e.g. `mt_post_multtest`)
 
 -   **fold changes** - calculate fold changes for a statistical result
-    of two-group comparisons (e.g. mt_post_fc)
+    of two-group comparisons (e.g. `mt_post_fc`)
 
 -   **p-gains** - calculate the increase in strength of association when
-    using feature ratios (e.g. mt_post_pgain)
+    using feature ratios (e.g. `mt_post_pgain`)
 
 ### 1.2.7. Reporting (**mt_reporting**)
 
@@ -354,29 +356,29 @@ These functions create log entries describing the information about the
 data (at time function was called in the pipeline) or a statistical
 result. These entries are stored in the pipeline results as well as
 output to the console during runtime. Examples include
-mt_reporting_data, which reports the numbers of samples, features, and
+`mt_reporting_data`, which reports the numbers of samples, features, and
 the number of columns in each annotation data frame.
 
 #### 1.2.7.4. Timing
 
 maplet provides a timing functionality for pipelines using the tictoc
-package. Users can start timing with the function mt_reporting_tic and
-end timing with the function mt_reporting_toc.
+package. Users can start timing with the function `mt_reporting_tic` and
+end timing with the function `mt_reporting_toc`.
 
 ### 1.2.8. Write (**mt_write**)
 
 Write functions are denoted by the prefix **mt_write**. They allow the
 user to output elements of the pipeline object to external files at any
-point in the pipeline. Examples include mt_write_se_xls (writes assay,
-rowData, and colData data frames to an Excel file) and mt_write_se_rds
+point in the pipeline. Examples include `mt_write_se_xls` (writes assay,
+rowData, and colData data frames to an Excel file) and `mt_write_se_rds`
 (saves the pipeline object to an R data file).
 
 ### 1.2.9. Clean Up Pipeline (**mt_clean**)
 
 Functions with the prefix **mt_clean** are used to "tidy up" a pipeline
 object, for example by eliminating extraneous data or results. Examples
-include mt_clean_fix_ggplot (converts plots saved as ggplot env to
-images) and mt_clean_remove_results (allows the user to delete elements
+include `mt_clean_fix_ggplot` (converts plots saved as ggplot env to
+images) and `mt_clean_remove_results` (allows the user to delete elements
 from the metadata(D)\$result list).
 
 # 2. Accessing Results 
@@ -399,10 +401,10 @@ These meta functions allow the user to directly access the contents of
 the results list in the pipeline object metadata. They include the
 following:
 
--   mtm_get_stat_by_name - retrieves statistical results from
+-   `mtm_get_stat_by_name` - retrieves statistical results from
     **mt_stats** call stored in the pipeline by the supplied name
 
--   mtm_res_get_entries - extracts metadata(.)\$results in a given
+-   `mtm_res_get_entries` - extracts metadata(.)\$results in a given
     namespace of arbitrary depth; e.g. mtm_res_get_path(path="plots")
     returns all plot objects, while mtm_res_get_path(path=c("plots",
     "box")) returns all plot objects generated by functions of the
@@ -411,27 +413,27 @@ following:
     metadata](#storing-pipeline-steps-and-results-in-metadata) for
     information on the \$results structure
 
--   mtm_res_get_plots - returns all plots from each **mt_plots** entry
+-   `mtm_res_get_plots` - returns all plots from each **mt_plots** entry
     in metadata(.)\$results list
 
--   mtm_plot_all_tofile - opens a device and exports all plots (from SE
+-   `mtm_plot_all_tofile` - opens a device and exports all plots (from SE
     or list of plots) to a file (e.g. pdf)
 
--   mtm_res_get_uuids - extract all UUIDs for each function call
+-   `mtm_res_get_uuids` - extract all UUIDs for each function call
 
--   mtm_res_get_ptrs - extract all assay pointers for each function call
+-   `mtm_res_get_ptrs` - extract all assay pointers for each function call
 
--   mtm_get_assay_by_id - return a specific assay version given a UUID
+-   `mtm_get_assay_by_id` - return a specific assay version given a UUID
     or a tag name; refer to section [3.5 Storing Assay
     Versions](#storing-assay-versions) for further details
 
--   mtm_get_assay_by_ptr - retrieve a particular assay version given a
+-   `mtm_get_assay_by_ptr` - retrieve a particular assay version given a
     "pointer" value; refer to section [3.5 Storing Assay
     Versions](#storing-assay-versions) for further details
 
 NOTE: Although these are meta functions, they can also be utilized for
-internal operations by **mt\_** functions. mtm_get_stat_by_name and
-mtm_res_get_entires are often utilized in this way.
+internal operations by **mt\_** functions. `mtm_get_stat_by_name` and
+`mtm_res_get_entires` are often utilized in this way.
 
 # 3. For Developers
 
@@ -514,8 +516,8 @@ which in maplet, by internal convention, contains up to five elements:
 
 The elements **results** and **sessionInfo** will always be present in
 the metadata. The **pathways** element is only present if a pathway
-annotation function (e.g. mt_anno_pathways_hmdb) has been called. The
-**settings** element will be included only if the function mt_settings
+annotation function (e.g. `mt_anno_pathways_hmdb`) has been called. The
+**settings** element will be included only if the function `mt_settings`
 is called. The **assays** element is only present if the global setting
 *save_all_assays* is set to TRUE.
 
@@ -598,36 +600,36 @@ when naming functions. These are listed by category below.
 
 -   **mt_load\_\[*platform / file type*\]** - third descriptive term
     should be the name of the data platform or file type (e.g.
-    mt_load_xls or mt_load_WCM)
+    `mt_load_xls` or `mt_load_WCM`)
 
 -   **mt_load\_\[*platform / file type*\]\_\[*specification / version
     \#*\]** - for those **mt_load** functions that use the same platform
     or file type, further specifications like data type (e.g.
-    mt_load_metabolon_lipidomics) or version \# (e.g.
-    mt_load_metabolon_v1) should be added as the *fourth* term
+    `mt_load_metabolon_lipidomics`) or version \# (e.g.
+    `mt_load_metabolon_v1`) should be added as the *fourth* term
 
 ##### mt_plots naming patterns
 
 -   **mt_plots\_\[*plot type*\]** - one term description of the plot
     type; data type used is either assay or obvious from the plot type
-    (e.g. mt_plots_pca or mt_plots_dilution)
+    (e.g. `mt_plots_pca` or `mt_plots_dilution`)
 
 -   **mt_plots\_\[*plot type 1*\]\_\[*plot type 2*\]\...** - for
     functions that can create multiple plot types; list plot type by
-    order of importance or alphabetically (e.g. mt_plots_box_scatter)
+    order of importance or alphabetically (e.g. `mt_plots_box_scatter`)
 
 -   **mt_plots\_\[*data type*\]\_\[*plot type*\]** - for functions that
     do not utilize assay data or for which the type of data being
     plotted is important to specify; example data type include:
 
     -   **pval** - using p-value column from a statistical results table
-        (e.g. mt_plots_pval_qq)
+        (e.g. `mt_plots_pval_qq`)
 
     -   **stats** - using values from a statistical results table (e.g.
-        mt_plots_stats_compare)
+        `mt_plots_stats_compare`)
 
     -   **multstats** - using values from multiple statistical results
-        tables (e.g. mt_plots_multstats_heatmap)
+        tables (e.g. `mt_plots_multstats_heatmap`)
 
 ##### mt_pre sub-namespaces
 
@@ -665,30 +667,30 @@ when naming functions. These are listed by category below.
 -   Use concise, descriptive function names
 
     -   Where possible, use a category prefix and a single, descriptive
-        term to name a function (e.g. mt_plots_pca or mt_modify_mutate)
+        term to name a function (e.g. `mt_plots_pca` or `mt_modify_mutate`)
 
     -   Otherwise, use smallest number of terms needed to convey meaning
-        (e.g. mt_anno_pathways_remove_redundant)
+        (e.g. `mt_anno_pathways_remove_redundant`)
 
     -   In general, terms go in order from "most general" to "most
-        specific" (e.g. in mt_load_metabolon_lipidomics, "mt" is the
+        specific" (e.g. in `mt_load_metabolon_lipidomics`, "mt" is the
         most general term - a maplet function - and "lipidomics" is the
         most specific - the type of Metabolon data format)
 
 -   Two functions that perform the same operation, but operate
     differently for features and samples are given the same name and end
     with **\_features** and **\_samples**, respectively (e.g.
-    mt_modify_avg_features and mt_modify_avg_samples)
+    `mt_modify_avg_features` and `mt_modify_avg_samples`)
 
 -   Sometimes function names will include descriptive phrases involving
     the preposition "to"; the terms of these phrases are separated by an
     underscore; these include:
 
     -   mt\_\[*namespace*\]\_\[*object*\]\_to_na - converts the
-        specified "object" to na (e.g. mt_pre_zero_to_na)
+        specified "object" to na (e.g. `mt_pre_zero_to_na`)
 
     -   mt\_\[*namespace*\]\_\[*object 1*\]\_to\_\[*object 2*\] -
-        converts "object1" to "object2" (e.g. mt_anno_hmdb_to_kegg)
+        converts "object1" to "object2" (e.g. `mt_anno_hmdb_to_kegg`)
 
 ### 3.2.2. Arguments
 
@@ -803,7 +805,7 @@ use.
 #### Other
 
 -   **method** - argument used in any argument with multiple method
-    types (e.g. "bonferroni" or "BH" for mt_post_multtest)
+    types (e.g. "bonferroni" or "BH" for `mt_post_multtest`)
 
 -   **col_name** - used when accessing a column from rowData or colData
     that is both input and output
@@ -858,14 +860,14 @@ operations. Two function types have special use cases for these fields:
 
 ### 3.3.1. **mt_plots** - output and output2
 
-All **mt_plots** functions (with the exception of mt_plots_pathview)
+All **mt_plots** functions (with the exception of `mt_plots_pathview`)
 produce a list of one or more plot objects that is stored in the
 metadata()\$results **output** field. Specifically, the contents of the
 output field must be an object on which the function plot() can be
 applied. These are typically ggplot objects.
 
 Some **mt_plots** functions make use of the **output2** field for
-storing the data used in creating the plots (e.g. mt_plots_pca returns a
+storing the data used in creating the plots (e.g. `mt_plots_pca` returns a
 matrix of scores and loadings in the **output2** field) or information
 required for internal operations (e.g. number of rows for calculating
 the dynamic height of a plot).
@@ -873,7 +875,7 @@ the dynamic height of a plot).
 ### 3.3.2. **mt_stats** - output
 
 All **mt_stats** functions (with the exception of
-mt_stats_pathway_enrichment) produce a list of results that are stored
+`mt_stats_pathway_enrichment`) produce a list of results that are stored
 in the metadata()\$results **output** field. Each list may contain any
 field relevant to that function, however each list MUST include the
 following fields:
@@ -902,7 +904,7 @@ Pathway annotations in maplet follow a specific format that is an
 interplay between the rowData data frame and the \$pathways field of the
 SummarizedExperiment's metadata.
 
-When a pathway annotation function (e.g. mt_anno_pathways_hmdb) is
+When a pathway annotation function (e.g. `mt_anno_pathways_hmdb`) is
 called, a feature ID column from the rowData data frame is matched
 against a pathway database (can be internal, user-provided, or from a
 package). Because features and pathways constitute a many-to-many
@@ -912,8 +914,8 @@ lists associated with the feature ID in the rowData and keep other
 important information about the pathways in a separate data frame in the
 \$pathways field in the metadata of the SE. This data frame has the same
 name used to create the pathway annotation ID column in the rowData
-(e.g. if someone calls mt_anno_pathways_hmdb(D, in_col="hmdb_id",
-out_col="kegg_db") the name of the corresponding data frame in
+(e.g. if someone calls `mt_anno_pathways_hmdb(D, in_col="hmdb_id",
+out_col="kegg_db")` the name of the corresponding data frame in
 \$pathways will be "kegg_db").
 
 The pathway annotation data frame stored in the \$pathways field of the
@@ -940,7 +942,7 @@ columns:
     particular pathway
 
 After a pathway annotation function is called, it is common to call
-mt_anno_pathways_remove_redundant directly afterwards. A pathway is
+`mt_anno_pathways_remove_redundant` directly afterwards. A pathway is
 uniquely identified by the features found within it. However, since the
 number of measured metabolites is generally only a small fraction of the
 number of total features in a database, most if not all pathways only
@@ -948,7 +950,7 @@ have a fraction of their total number of features measured by the data.
 It can happen that two or more pathways share the exact same subset of
 measured metabolites, and therefore cannot be distinguished from one
 another using the data available. To avoid redundancy in the pathway
-annotations, the function mt_anno_pathways_remove_redundant groups those
+annotations, the function `mt_anno_pathways_remove_redundant` groups those
 pathways that cannot be distinguished from one another, chooses one to
 represent all of these pathways, removes the other pathway names from
 the rowData pathway annotation column and the metadata \$pathways data
@@ -978,7 +980,7 @@ of the metadata. This field contains two entries:
 -   **assay_lst** - named list of all assay versions; names are assay
     identifiers (a.k.a "pointers")
 
-The user can enable this functionality by using mt_settings to set the
+The user can enable this functionality by using `mt_settings` to set the
 global setting *save_all_assays* to TRUE. Once enabled, every time a
 function is called, maplet will check to see if changes have been made
 to the assay. If changes have been made, a new **assay_ptr** will be
@@ -1029,8 +1031,6 @@ operations on one or more of the SE data frames:
 -   **mti_filter_samples** - applies logical expression to assay data
     for filtering samples
 
--   **mti_coalesce_join** - *add description*
-
 -   **mti_format_se_samplewise** - concatenate assay data frame with
     sample annotations
 
@@ -1052,8 +1052,8 @@ Other stand-alone internal helper functions include:
 -   **mti_dots_to_str** - converts arguments passed via ... into strings
     to be used in the metadata(.)\$results **logtxt** field
 
--   **mti_check_is_logged** - checks to see if either mt_pre_trans_log
-    or mt_flag_logged was called
+-   **mti_check_is_logged** - checks to see if either `mt_pre_trans_log`
+    or `mt_flag_logged` was called
 
 -   **mti_fixorder** - fixes the order of a factor
 
